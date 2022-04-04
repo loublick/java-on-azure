@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-petclinic-docker-deployment
+  labels:
+    app: spring-petclinic-docker-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-petclinic-docker
+  template:
+    metadata:
+      labels:
+        app: spring-petclinic-docker
+    spec:
+      containers:
+      - name: spring-petclinic-docker
+        image: crspringpetclinic.azurecr.io/spring-petclinic-docker:v1
+        ports:
+        - containerPort: 8080
