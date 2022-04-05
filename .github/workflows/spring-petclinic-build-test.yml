@@ -11,8 +11,10 @@ on:
 
 jobs:
   build:
-
+    name: Build spring-petclinic
     runs-on: ubuntu-latest
+    strategy:
+      matrix: {dir: [./sampleapps/spring-petclinic]}
 
     steps:
     - uses: actions/checkout@v3
@@ -23,4 +25,5 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
+      working-directory: ${{ matrix.dir }}
       run: mvn -B package --file pom.xml
