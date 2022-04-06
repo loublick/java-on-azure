@@ -18,12 +18,9 @@ jobs:
         matrix: {dir: [./sampleapps/spring-petclinic]}
 
       steps:
-      - name: Checkout code repo 
+      - name: Build the Docker image 
       - uses: actions/checkout@v3
-
-      - name: Build the Docker image
         working-directory: ${{ matrix.dir }}
-        run: docker build --file Dockerfile --tag spring-petclinic:latest
-      
-      - name: Push Docker image to ACR
-        run: docker image push crspringpetclinic.azurecr.io/spring-petclinic:latest
+        run: 
+          docker build --file Dockerfile --tag spring-petclinic:latest
+          docker image push crspringpetclinic.azurecr.io/spring-petclinic:latest
