@@ -12,8 +12,11 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix: {dir: [./sampleapps/spring-petclinic]}
 
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
+      working-directory: ${{ matrix.dir }}
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
