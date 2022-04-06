@@ -23,6 +23,6 @@ jobs:
     - name: Build the Docker image
       working-directory: ${{ matrix.dir }}
       run: 
-        docker build --file Dockerfile --tag $IMAGE_NAME
-        docker push crspringpetclinic.azurecr.io/$IMAGE_NAME
+        docker build --file Dockerfile --tag spring-petclinic:latest
+        docker push crspringpetclinic.azurecr.io/spring-petclinic:latest
 
