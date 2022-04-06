@@ -8,22 +8,30 @@ on:
       - 'v*'
   workflow_dispatch:
 
+env:
+  IMAGE_NAME: spring-petclinic
+
 jobs:
 
   build:
-
+    name: Build container image
     runs-on: ubuntu-latest
-    strategy:
-      matrix: {dir: [./sampleapps/spring-petclinic]}
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      working-directory: ${{ matrix.dir }}
-      run: 
-        docker build . --file Dockerfile --tag spring-petclinic:latest
-    
-    - name: Push Docker image to ACR
-      run: 
-        docker push crspringpetclinic.azurecr.io/spring-petclinic:latest
-
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Get tag
+        id: tag
+        uses: dawidd6/action-get-tag@v1
+      - name: Log into registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ secrets.ACR_ENDPOINT }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+      - name: Build & Push
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          build-args: |
+            version=${{ steps.tag.outputs.tag }}
+          tags: ${{ secrets.ACR_ENDPOINT }}/${{ env.IMAGE_NAME }}:${{ steps.tag.outputs.tag }}
