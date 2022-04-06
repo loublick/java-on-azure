@@ -13,10 +13,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix: {dir: [./sampleapps/spring-petclinic]}
+
     steps:
-    - name: Build the Docker image 
-    - uses: actions/checkout@v3
-      working-directory: ${{ matrix.dir }}
-      run: 
-        docker build --file Dockerfile --tag spring-petclinic:latest
-        docker image push crspringpetclinic.azurecr.io/spring-petclinic:latest
+        - uses: actions/checkout@v3
+        - name: Set up JDK 11
+          uses: actions/setup-java@v3
+          with:
+            java-version: '11'
+            distribution: 'temurin'
+            cache: maven
+        - name: Build with Maven
+          working-directory: ${{ matrix.dir }}
+          run: mvn compile jib:build --file pom.xml
