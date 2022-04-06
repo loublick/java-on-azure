@@ -48,6 +48,7 @@ class PetClinicIntegrationTests {
 		vets.findAll(); // served from cache
 	}
 
+	@Ignore
 	@Test
 	void testOwnerDetails() {
 		RestTemplate template = builder.rootUri("http://localhost:" + port).build();
