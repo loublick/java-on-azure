@@ -8,7 +8,6 @@ on:
 
 jobs:
 
-jobs:
   build:
     name: Build spring-petclinic
     runs-on: ubuntu-latest
