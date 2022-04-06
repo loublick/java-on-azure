@@ -2,14 +2,11 @@ name: spring-petclinic-build-image
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - 'main'
+    tags:
+      - 'v*'
   workflow_dispatch:
-
-env:
-  IMAGE_NAME: spring-petclinic
-  IMAGE_VERSION: latest
 
 jobs:
 
@@ -24,9 +21,9 @@ jobs:
     - name: Build the Docker image
       working-directory: ${{ matrix.dir }}
       run: 
-        docker build . --file Dockerfile --tag $IMAGE_NAME:$IMAGE_VERSION
+        docker build . --file Dockerfile --tag spring-petclinic:latest
     
     - name: Push Docker image to ACR
       run: 
-        docker push crspringpetclinic.azurecr.io/$IMAGE_NAME:$IMAGE_VERSION
+        docker push crspringpetclinic.azurecr.io/spring-petclinic:latest
 
